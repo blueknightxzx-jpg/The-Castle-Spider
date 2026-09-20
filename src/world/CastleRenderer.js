@@ -139,48 +139,49 @@ export class CastleRenderer {
   drawClosets(ctx, world, cameraX, viewportWidth) {
     for (const closet of world.closets) {
       const x = closet.x - cameraX;
-      if (x < -120 || x > viewportWidth + 120) continue;
+      if (x < -150 || x > viewportWidth + 150) continue;
 
       const left = x - closet.width / 2;
       const top = closet.y - closet.height;
+      const open = closet.openAmount || 0;
 
       ctx.fillStyle = "#626770";
-      ctx.fillRect(left - 6, top - 8, closet.width + 12, 10);
+      ctx.fillRect(left - 10, top - 12, closet.width + 20, 12);
 
-      ctx.fillStyle = "#251b18";
+      ctx.fillStyle = "#151115";
+      ctx.fillRect(left - 7, top - 4, closet.width + 14, closet.height + 4);
+
+      ctx.fillStyle = "#07080a";
       ctx.fillRect(left, top, closet.width, closet.height);
 
+      const gap = 4 + open * closet.width * 0.2;
+      const slide = open * closet.width * 0.10;
+      const half = closet.width / 2;
+      const doorWidth = Math.max(14, half - gap / 2);
+
+      drawDoor(ctx, left - slide, top, doorWidth, closet.height, false);
+      drawDoor(ctx, x + gap / 2 + slide, top, doorWidth, closet.height, true);
+
       ctx.strokeStyle = "#7b5a43";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(left + 3, top + 3, closet.width - 6, closet.height - 6);
+      ctx.lineWidth = 5;
+      ctx.strokeRect(left + 2, top + 2, closet.width - 4, closet.height - 4);
 
-      ctx.strokeStyle = "#4b3529";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(x, top + 10);
-      ctx.lineTo(x, closet.y - 8);
-      ctx.stroke();
-
-      ctx.strokeStyle = "#684b37";
-      ctx.strokeRect(left + 8, top + 12, closet.width / 2 - 12, 22);
-      ctx.strokeRect(x + 4, top + 12, closet.width / 2 - 12, 22);
-      ctx.strokeRect(left + 8, top + 40, closet.width / 2 - 12, 30);
-      ctx.strokeRect(x + 4, top + 40, closet.width / 2 - 12, 30);
-
-      ctx.fillStyle = "#b5a27a";
-      ctx.beginPath();
-      ctx.arc(x - 5, top + 28, 2.5, 0, Math.PI * 2);
-      ctx.arc(x + 5, top + 28, 2.5, 0, Math.PI * 2);
-      ctx.fill();
+      if ((closet.interactionPulse || 0) > 0) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(0.65, closet.interactionPulse * 0.65);
+        ctx.strokeStyle = "#e6e7ea";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(left - 5, top - 5, closet.width + 10, closet.height + 10);
+        ctx.restore();
+      }
 
       ctx.fillStyle = "#4c4038";
-      ctx.fillRect(left - 5, closet.y - 8, closet.width + 10, 8);
+      ctx.fillRect(left - 6, closet.y - 9, closet.width + 12, 9);
 
       ctx.fillStyle = "rgba(0,0,0,.34)";
-      ctx.fillRect(left - 8, closet.y, closet.width + 16, 7);
+      ctx.fillRect(left - 10, closet.y, closet.width + 20, 8);
     }
   }
-
   drawSconces(ctx, world, cameraX, viewportWidth) {
     for (const sconce of world.sconces) {
       const x = sconce.x - cameraX;
@@ -354,4 +355,34 @@ export class CastleRenderer {
     ctx.fillStyle = "#a7791c";
     ctx.fillRect(left - 14, floor - 8, width + 28, 8);
   }
+}
+
+function drawDoor(ctx, x, y, width, height, mirrored) {
+  ctx.fillStyle = "#251b18";
+  ctx.fillRect(x, y, width, height);
+
+  ctx.strokeStyle = "#7b5a43";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(x + 3, y + 3, width - 6, height - 6);
+
+  const innerX = x + 8;
+  const innerY = y + height * 0.16;
+  const innerW = Math.max(12, width - 16);
+  const innerH = height * 0.28;
+
+  ctx.strokeStyle = "#684b37";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(innerX, innerY, innerW, innerH);
+  ctx.strokeRect(innerX, y + height * 0.53, innerW, height * 0.33);
+
+  ctx.fillStyle = "#b5a27a";
+  ctx.beginPath();
+  ctx.arc(
+    mirrored ? x + 7 : x + width - 7,
+    y + height * 0.43,
+    2.8,
+    0,
+    Math.PI * 2
+  );
+  ctx.fill();
 }
