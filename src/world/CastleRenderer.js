@@ -23,7 +23,12 @@ export class CastleRenderer {
 
   drawWallShell(ctx, world, cameraX, viewportWidth) {
     ctx.fillStyle = "#20242b";
-    ctx.fillRect(-cameraX, world.wallTop, world.width, world.floorY - world.wallTop);
+    ctx.fillRect(
+      -cameraX,
+      world.wallTop,
+      world.width,
+      world.floorY - world.wallTop
+    );
 
     ctx.fillStyle = "#101319";
     ctx.fillRect(0, world.ceilingY, viewportWidth, 16);
@@ -64,11 +69,11 @@ export class CastleRenderer {
         world.floorY - world.wallTop - 102
       );
 
-      // Subtle vertical wall segmentation; no room names or labels.
-      ctx.strokeStyle = "rgba(93,98,108,.20)";
+      // Subtle 60m structural segmentation.
+      ctx.strokeStyle = "rgba(93,98,108,.18)";
       ctx.lineWidth = 2;
 
-      const bay = 240;
+      const bay = 60 * world.pixelsPerMeter;
       for (let bayX = x + bay; bayX < x + section.width; bayX += bay) {
         ctx.beginPath();
         ctx.moveTo(bayX, world.wallTop + 22);
@@ -139,20 +144,16 @@ export class CastleRenderer {
       const left = x - closet.width / 2;
       const top = closet.y - closet.height;
 
-      // Crown molding.
       ctx.fillStyle = "#626770";
       ctx.fillRect(left - 6, top - 8, closet.width + 12, 10);
 
-      // Dark wood body.
       ctx.fillStyle = "#251b18";
       ctx.fillRect(left, top, closet.width, closet.height);
 
-      // Raised frame.
       ctx.strokeStyle = "#7b5a43";
       ctx.lineWidth = 4;
       ctx.strokeRect(left + 3, top + 3, closet.width - 6, closet.height - 6);
 
-      // Twin doors.
       ctx.strokeStyle = "#4b3529";
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -160,25 +161,21 @@ export class CastleRenderer {
       ctx.lineTo(x, closet.y - 8);
       ctx.stroke();
 
-      // Recessed panels.
       ctx.strokeStyle = "#684b37";
-      ctx.strokeRect(left + 10, top + 16, closet.width / 2 - 15, 58);
-      ctx.strokeRect(x + 5, top + 16, closet.width / 2 - 15, 58);
-      ctx.strokeRect(left + 10, top + 84, closet.width / 2 - 15, 66);
-      ctx.strokeRect(x + 5, top + 84, closet.width / 2 - 15, 66);
+      ctx.strokeRect(left + 8, top + 12, closet.width / 2 - 12, 22);
+      ctx.strokeRect(x + 4, top + 12, closet.width / 2 - 12, 22);
+      ctx.strokeRect(left + 8, top + 40, closet.width / 2 - 12, 30);
+      ctx.strokeRect(x + 4, top + 40, closet.width / 2 - 12, 30);
 
-      // Handles.
       ctx.fillStyle = "#b5a27a";
       ctx.beginPath();
-      ctx.arc(x - 6, top + 46, 3, 0, Math.PI * 2);
-      ctx.arc(x + 6, top + 46, 3, 0, Math.PI * 2);
+      ctx.arc(x - 5, top + 28, 2.5, 0, Math.PI * 2);
+      ctx.arc(x + 5, top + 28, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Base plinth.
       ctx.fillStyle = "#4c4038";
       ctx.fillRect(left - 5, closet.y - 8, closet.width + 10, 8);
 
-      // Small shadow anchors the closet to the floor.
       ctx.fillStyle = "rgba(0,0,0,.34)";
       ctx.fillRect(left - 8, closet.y, closet.width + 16, 7);
     }
@@ -227,8 +224,10 @@ export class CastleRenderer {
     ctx.strokeStyle = "#30333b";
     ctx.lineWidth = 2;
 
-    const seamStart = -(Math.floor(cameraX / 140) * 140);
-    for (let x = seamStart; x < viewportWidth + 140; x += 140) {
+    const seamStep = 20 * world.pixelsPerMeter;
+    const seamStart = -(Math.floor(cameraX / seamStep) * seamStep);
+
+    for (let x = seamStart; x < viewportWidth + seamStep; x += seamStep) {
       ctx.beginPath();
       ctx.moveTo(x, y + 54);
       ctx.lineTo(x - 20, viewportHeight);
@@ -236,7 +235,7 @@ export class CastleRenderer {
     }
 
     ctx.strokeStyle = "#262a31";
-    for (let x = seamStart - 70; x < viewportWidth + 140; x += 140) {
+    for (let x = seamStart - seamStep / 2; x < viewportWidth + seamStep; x += seamStep) {
       ctx.beginPath();
       ctx.moveTo(x, y + 78);
       ctx.lineTo(x, viewportHeight);
@@ -246,70 +245,113 @@ export class CastleRenderer {
 
   drawExit(ctx, world, cameraX, viewportWidth) {
     const x = world.exitX - cameraX;
-    if (x < -260 || x > viewportWidth + 260) return;
+    if (x < -300 || x > viewportWidth + 300) return;
 
     const floor = world.floorY;
-    const width = 210;
-    const height = 328;
+    const width = 15 * world.pixelsPerMeter;
+    const height = 27 * world.pixelsPerMeter;
     const left = x - width / 2;
     const top = floor - height;
 
-    // Deep architectural recess.
-    ctx.fillStyle = "#06080b";
-    ctx.fillRect(left - 18, top - 18, width + 36, height + 18);
+    const shoulderY = top + 58;
+    const outerShoulderY = top + 52;
+    const archApexY = top - 30;
+    const doorInset = 7;
 
-    // Stone arch frame.
+    // Deep recess.
+    ctx.fillStyle = "#06080b";
+    ctx.fillRect(
+      left - 22,
+      top - 32,
+      width + 44,
+      height + 32
+    );
+
+    // Stone frame with one continuous curved upper arch.
     ctx.strokeStyle = "#7a7d83";
     ctx.lineWidth = 10;
     ctx.beginPath();
     ctx.moveTo(left - 6, floor);
-    ctx.lineTo(left - 6, top + 46);
-    ctx.quadraticCurveTo(x, top - 44, left + width + 6, top + 46);
+    ctx.lineTo(left - 6, outerShoulderY);
+    ctx.quadraticCurveTo(x, archApexY, left + width + 6, outerShoulderY);
     ctx.lineTo(left + width + 6, floor);
     ctx.stroke();
 
-    // Golden double door.
-    const gold = ctx.createLinearGradient(left, top, left + width, top);
-    gold.addColorStop(0, "#8a5a12");
-    gold.addColorStop(0.18, "#d9a62d");
-    gold.addColorStop(0.5, "#ffe27a");
-    gold.addColorStop(0.82, "#d09b24");
-    gold.addColorStop(1, "#80530e");
+    // Golden door uses the matching inner curve rather than a rectangle.
+    const doorLeft = left + doorInset;
+    const doorRight = left + width - doorInset;
+    const doorShoulder = shoulderY;
+    const doorApex = top - 18;
+
+    const gold = ctx.createLinearGradient(
+      doorLeft,
+      top,
+      doorRight,
+      top
+    );
+    gold.addColorStop(0, "#80520d");
+    gold.addColorStop(0.18, "#d19b22");
+    gold.addColorStop(0.5, "#ffe17a");
+    gold.addColorStop(0.82, "#d19b22");
+    gold.addColorStop(1, "#80520d");
 
     ctx.fillStyle = gold;
-    ctx.fillRect(left, top + 34, width, height - 34);
+    ctx.beginPath();
+    ctx.moveTo(doorLeft, floor);
+    ctx.lineTo(doorLeft, doorShoulder);
+    ctx.quadraticCurveTo(x, doorApex, doorRight, doorShoulder);
+    ctx.lineTo(doorRight, floor);
+    ctx.closePath();
+    ctx.fill();
 
-    ctx.strokeStyle = "#f3cb59";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(left + 5, top + 39, width - 10, height - 44);
+    ctx.strokeStyle = "#f5cc58";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(doorLeft, floor - 3);
+    ctx.lineTo(doorLeft, doorShoulder);
+    ctx.quadraticCurveTo(x, doorApex, doorRight, doorShoulder);
+    ctx.lineTo(doorRight, floor - 3);
+    ctx.stroke();
 
-    // Door split.
+    // Double-door seam follows the vertical center and stops below the arch.
     ctx.strokeStyle = "#8d6618";
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(x, top + 42);
-    ctx.lineTo(x, floor - 6);
+    ctx.moveTo(x, doorApex + 22);
+    ctx.lineTo(x, floor - 7);
     ctx.stroke();
 
-    // Decorative panels.
+    // Tall paired panels remain inside the curved door silhouette.
     ctx.strokeStyle = "#fff0a5";
     ctx.lineWidth = 2;
-    for (const panelY of [top + 72, top + 160, top + 248]) {
-      ctx.strokeRect(left + 22, panelY, width / 2 - 31, 62);
-      ctx.strokeRect(x + 9, panelY, width / 2 - 31, 62);
+    for (const panelY of [top + 78, top + 158, top + 238]) {
+      const panelH = 54;
+      if (panelY + panelH > floor - 16) continue;
+
+      ctx.strokeRect(
+        doorLeft + 18,
+        panelY,
+        width / 2 - 26,
+        panelH
+      );
+
+      ctx.strokeRect(
+        x + 8,
+        panelY,
+        width / 2 - 26,
+        panelH
+      );
     }
 
     // Handles.
     ctx.fillStyle = "#5f4210";
     ctx.beginPath();
-    ctx.arc(x - 12, top + 184, 5, 0, Math.PI * 2);
-    ctx.arc(x + 12, top + 184, 5, 0, Math.PI * 2);
+    ctx.arc(x - 11, top + 188, 5, 0, Math.PI * 2);
+    ctx.arc(x + 11, top + 188, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    // Gold floor threshold.
+    // Gold threshold.
     ctx.fillStyle = "#a7791c";
-    ctx.fillRect(left - 12, floor - 8, width + 24, 8);
-
-    // No label: the silhouette and placement make this the obvious final exit.
+    ctx.fillRect(left - 14, floor - 8, width + 28, 8);
   }
 }
