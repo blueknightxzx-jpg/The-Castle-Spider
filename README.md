@@ -4,7 +4,7 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.5 — Spider foundation
+**Current:** v0.5.1 — Asset integration hotfix
 
 The project follows a locked master roadmap.
 
