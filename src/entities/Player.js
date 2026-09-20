@@ -1,5 +1,5 @@
-import { clamp, resolveHorizontal } from "../core/Collision.js?v=v0.4.0";
-import { getSkinRenderer } from "./skins/Registry.js?v=v0.4.0";
+import { clamp, resolveHorizontal } from "../core/Collision.js?v=v0.5.1";
+import { getSkinRenderer } from "./skins/Registry.js?v=v0.5.1";
 
 export class Player {
   constructor({ x = 160, y = 430, skin = "default" } = {}) {
