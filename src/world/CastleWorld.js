@@ -1,25 +1,26 @@
 export class CastleWorld {
   constructor() {
-    // Full-map scale: 1,200 meters at 4px per meter.
+    // Real world scale: 1,200m × 12px/m = 14,400px of traversable map.
     this.meters = 1200;
-    this.pixelsPerMeter = 4;
+    this.pixelsPerMeter = 12;
     this.width = this.meters * this.pixelsPerMeter;
     this.height = 540;
 
-    this.ceilingY = 62;
-    this.wallTop = 78;
+    this.ceilingY = 54;
+    this.wallTop = 72;
     this.floorY = 430;
     this.playerY = 430;
 
     this.minX = 90;
     this.maxX = this.width - 90;
 
-    // The only exit is the grand main door at the end of the 1,200m map.
-    // It must be initialized before closet generation.
-    this.exitX = this.width - 86;
+    // The only exit is the grand main door at the exact end of the map.
+    this.exitX = this.width - 72;
 
-    // Five 240m architectural sections share one alignment system.
+    // Five 240m architectural sections. Every important measurement below
+    // derives from meters, keeping the entire castle on one consistent scale.
     const sectionWidth = 240 * this.pixelsPerMeter;
+
     this.sections = [
       { x: 0, width: sectionWidth, style: "entrance" },
       { x: sectionWidth, width: sectionWidth, style: "gallery" },
@@ -33,7 +34,7 @@ export class CastleWorld {
     this.sconces = [];
     this.closets = [];
 
-    // 60m structural bays.
+    // Structural columns every 60m.
     const bayWidth = 60 * this.pixelsPerMeter;
 
     for (const section of this.sections) {
@@ -43,16 +44,17 @@ export class CastleWorld {
         this.columns.push(x0 + offset);
       }
 
-      // Window centers: 30m, 90m, 150m, 210m into each section.
+      // Four centered windows per 240m section.
       for (const metersOffset of [30, 90, 150, 210]) {
         this.windows.push({
           x: x0 + metersOffset * this.pixelsPerMeter,
           y: 142,
-          width: 76,
-          height: 112
+          width: 48,
+          height: 94
         });
       }
 
+      // Two wall sconces per section.
       for (const metersOffset of [45, 195]) {
         this.sconces.push({
           x: x0 + metersOffset * this.pixelsPerMeter,
@@ -65,7 +67,8 @@ export class CastleWorld {
   }
 
   generateClosets() {
-    // Seeded layout: varied on purpose, but exactly reproducible.
+    // Seeded and reproducible. Odd slots sit in the middle of structural bays;
+    // even slots are column lines, so closets never land on a column.
     let seed = 0xC4573;
 
     const randomInt = (min, max) => {
@@ -73,28 +76,23 @@ export class CastleWorld {
       return min + Math.floor((seed / 4294967296) * (max - min + 1));
     };
 
-    // Columns occupy even 30m slots. Starting from an odd slot keeps closets
-    // in open bays rather than directly on columns.
     const slotStep = 30 * this.pixelsPerMeter;
     const gapChoices = [2, 4]; // 60m or 120m
-    const lastAllowedSlot = Math.floor((this.exitX - 165) / slotStep);
+    const lastAllowedSlot = Math.floor((this.exitX - 15 * this.pixelsPerMeter) / slotStep);
 
     let slotIndex = 3; // first closet at 90m
 
-    // The bound is a second line of defense against future generator changes.
-    const maxPlacements = 40;
-
-    while (slotIndex <= lastAllowedSlot && this.closets.length < maxPlacements) {
+    while (slotIndex <= lastAllowedSlot && this.closets.length < 40) {
       const candidate = slotIndex * slotStep;
 
       this.closets.push({
         x: candidate,
         y: this.floorY,
-        width: 68,
-        height: 174,
+        width: 3.5 * this.pixelsPerMeter,
+        height: 4.8 * this.pixelsPerMeter,
         spacing: this.closets.length === 0
           ? "start"
-          : candidate - this.closets[this.closets.length - 1].x >= 480
+          : candidate - this.closets[this.closets.length - 1].x >= 90 * this.pixelsPerMeter
             ? "spread"
             : "tight"
       });
