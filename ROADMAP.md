@@ -24,7 +24,7 @@ Explore → listen → detect danger → find safety → hide → survive → co
 - Knight and other character skins are future content and must not be hard-coded into the base player controller.
 - Castle architecture uses deliberate alignment/grid rules.
 - Current door-like hiding structures are **closets**, not generic doors.
-- Closets are placed on a 30m grid with deterministic 90–120m gaps.
+- Closets are placed on a 30m grid with deterministic 60–120m gaps.
 - The final exit is a single large golden main door.
 - Room/section names are not shown in the world.
 - Performance remains a first-class constraint for low-spec browser hardware.
