@@ -23,6 +23,7 @@ export class CastleScene extends Scene {
 
     const viewportWidth = this.app.renderer.width;
     const target = this.player.x - viewportWidth * 0.38;
+
     this.cameraX = Math.max(
       0,
       Math.min(target, this.world.width - viewportWidth)
@@ -44,13 +45,6 @@ export class CastleScene extends Scene {
       renderer.height
     );
 
-    const screenX = this.player.x - this.cameraX;
-    ctx.save();
-    ctx.translate(screenX - this.player.x, 0);
-    this.player.render(ctx);
-    ctx.restore();
-
-    // Draw the player at world position after camera transform.
     ctx.save();
     ctx.translate(-this.cameraX, 0);
     this.player.render(ctx);
@@ -60,7 +54,7 @@ export class CastleScene extends Scene {
   }
 
   drawHud(ctx, renderer) {
-    ctx.fillStyle = "rgba(6,8,12,.78)";
+    ctx.fillStyle = "rgba(6,8,12,.80)";
     ctx.fillRect(22, 18, 300, 64);
 
     ctx.fillStyle = "#dadce2";
@@ -91,10 +85,14 @@ export class CastleScene extends Scene {
     );
 
     ctx.fillStyle = "#70757f";
-    ctx.fillText("A/D • SHIFT", barX, barY + 34);
+    ctx.fillText("A/D • W/S • SHIFT", barX, barY + 34);
 
     ctx.fillStyle = "#626771";
     ctx.font = "11px Arial, sans-serif";
-    ctx.fillText("Castle sections: " + this.world.sections.length, 36, renderer.height - 22);
+    ctx.fillText(
+      "Castle sections: " + this.world.sections.length,
+      36,
+      renderer.height - 22
+    );
   }
 }
