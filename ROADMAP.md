@@ -1,7 +1,7 @@
 # THE CASTLE SPIDER — MASTER ROADMAP
 ## LOCKED DEVELOPMENT PLAN
 
-Status: LOCKED — STRUCTURAL AMENDMENT 01 APPLIED
+Status: LOCKED — STRUCTURAL AMENDMENTS 01–02 APPLIED
 Current version: v0.3
 Rule: Follow this roadmap unless the roadmap itself is deliberately changed and re-locked.
 
@@ -13,6 +13,7 @@ Explore → listen → detect danger → find safety → hide → survive → co
 
 ## Core structural decisions
 - The primary traversal space is a side-view castle hallway.
+- Full map length is **1,200 meters**.
 - Player traversal is strictly horizontal.
 - **A / Left Arrow** moves left.
 - **D / Right Arrow** moves right.
@@ -20,8 +21,12 @@ Explore → listen → detect danger → find safety → hide → survive → co
 - **W, S, Up Arrow and Down Arrow are NOT movement controls.**
 - **E is reserved as the interaction key.** Its gameplay function begins in v0.4 or later.
 - The player begins with a neutral **Default** character appearance.
-- Knight, creature, cosmetic and other character skins are future content and must not be hard-coded into the base player controller.
-- Castle architecture uses deliberate alignment/grid rules so scenery does not overlap or drift visually.
+- Knight and other character skins are future content and must not be hard-coded into the base player controller.
+- Castle architecture uses deliberate alignment/grid rules.
+- Current door-like hiding structures are **closets**, not generic doors.
+- Closets are placed on a 30m grid with deterministic 90–120m gaps.
+- The final exit is a single large golden main door.
+- Room/section names are not shown in the world.
 - Performance remains a first-class constraint for low-spec browser hardware.
 
 ## Development phases
@@ -64,7 +69,7 @@ Explore → listen → detect danger → find safety → hide → survive → co
 8. Failure must be understandable and fair.
 9. Test every milestone.
 10. This roadmap is the authority unless explicitly changed and re-locked.
-11. Structural decisions such as controls, traversal model, and character architecture are documented rather than silently patched.
+11. Structural decisions such as controls, traversal model, world scale, character architecture and castle composition are documented rather than silently patched.
 
 ## Version structure
 v0.1 Foundation
@@ -86,3 +91,11 @@ Applied before v0.4:
 - Reserved E for future interaction.
 - Replaced the knight as the hard-coded starting character with a neutral default character.
 - Established a structured castle alignment grid.
+
+## Structural amendment 02
+Applied before v0.4:
+- Expanded the full map to 1,200 meters.
+- Replaced generic wall doors with dedicated castle closets.
+- Set closet spacing to 90–120m on a 30m grid.
+- Removed room/exit text labels.
+- Established the grand golden main exit.
