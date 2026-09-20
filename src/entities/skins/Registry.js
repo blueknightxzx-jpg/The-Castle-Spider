@@ -1,4 +1,4 @@
-import { renderDefaultSkin } from "./DefaultSkin.js?v=v0.3.2";
+import { renderDefaultSkin } from "./DefaultSkin.js?v=v0.5.1";
 
 const SKINS = Object.freeze({
   default: renderDefaultSkin
