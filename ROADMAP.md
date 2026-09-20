@@ -1,8 +1,8 @@
 # THE CASTLE SPIDER — MASTER ROADMAP
 ## LOCKED DEVELOPMENT PLAN
 
-Status: LOCKED — STRUCTURAL AMENDMENTS 01–02 APPLIED
-Current version: v0.3
+Status: LOCKED — STRUCTURAL AMENDMENTS 01–03 APPLIED
+Current version: v0.4
 Rule: Follow this roadmap unless the roadmap itself is deliberately changed and re-locked.
 
 ## Vision
@@ -75,7 +75,7 @@ Explore → listen → detect danger → find safety → hide → survive → co
 v0.1 Foundation
 v0.2 Player
 v0.3 Castle
-v0.4 Interaction
+v0.4 Interaction — IN PROGRESS
 v0.5 Spider
 v0.6 Hiding
 v0.7 Events
@@ -105,3 +105,11 @@ Applied during v0.3.2 hotfix:
 - Sprint locks immediately at 0 stamina.
 - Sprint cannot resume until stamina reaches 100%.
 - Exhaustion is communicated by a pulsing red stamina track and a fading warning message.
+
+## v0.4 scope
+v0.4 is the active interaction milestone:
+- E is the live interaction key.
+- Nearby closets can be opened and closed.
+- Interaction prompts are contextual.
+- Closet door motion is animated.
+- Hiding remains reserved for v0.6.
