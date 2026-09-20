@@ -4,7 +4,7 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.3 — Castle, Structural Amendments 01–02
+**Current:** v0.3.2 hotfix — Castle, Structural Amendments 01–03
 
 The project follows a locked master roadmap.
 
@@ -69,3 +69,7 @@ Room names and exit labels are not rendered into the game world.
 Closets are currently visual-only. Interaction and hiding behavior arrive in their roadmap phases.
 
 The final exit is a large golden double door at the end of the 1,200m hallway.
+
+
+## Sprint rule
+When stamina reaches 0, sprint stops and locks. The player must recover to 100% before sprinting is available again. During exhaustion the stamina track pulses red and a fading recovery warning appears.
