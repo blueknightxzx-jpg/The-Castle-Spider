@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Castle Spider</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="menu" class="screen">
+  <div class="fog"></div>
+  <div class="menu-card">
+    <div class="eyebrow">AN INFINITE CASTLE NIGHT</div>
+    <h1>THE CASTLE<br><span>SPIDER</span></h1>
+    <p class="tagline">Don't let it hear you.</p>
+    <button id="play">ENTER THE CASTLE</button>
+    <button id="about">ABOUT</button>
+    <div id="aboutBox" class="about hidden">A prototype horror runner. Walk the castle, listen for the screech, and reach the exit.</div>
+  </div>
+</div>
+<div id="game" class="hidden">
+  <canvas id="canvas"></canvas>
+  <div id="hud">
+    <div class="objective">REACH THE EXIT</div>
+    <div class="stamina"><span>STAMINA</span><div><i id="staminaFill"></i></div></div>
+    <div id="warning"></div>
+  </div>
+  <div id="hint">A / D or ← / → to move • SHIFT to sprint • W / ↑ to hide in a closet</div>
+  <div id="end" class="hidden"><h2 id="endTitle"></h2><p id="endText"></p><button id="restart">TRY AGAIN</button></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
