@@ -1,4 +1,4 @@
-import { Scene } from "../core/Scene.js";
+import { Scene } from "../core/Scene.js?v=v0.3.2";
 
 export class BootScene extends Scene {
   constructor(app) {
