@@ -1,10 +1,48 @@
+const atlas = new Image();
+
+atlas.src = new URL(
+  "../../../assets/player_spider/knight_spider_idle_atlas.png",
+  import.meta.url
+).href;
+
 export function renderDefaultSkin(ctx, player) {
+  if (!atlas.complete || atlas.naturalWidth === 0) {
+    renderFallback(ctx, player);
+    return;
+  }
+
+  const column =
+    player.facing < 0
+      ? 1 // left
+      : 2; // right
+
+  const cellSize = 96;
+  const drawSize = 96;
+  const left = Math.round(player.x - drawSize / 2);
+  const top = Math.round(player.y - 66);
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(
+    atlas,
+    column * cellSize,
+    0,
+    cellSize,
+    cellSize,
+    left,
+    top,
+    drawSize,
+    drawSize
+  );
+  ctx.restore();
+}
+
+function renderFallback(ctx, player) {
   const left = Math.round(player.x - player.width / 2);
   const top = Math.round(player.y - player.height);
 
   ctx.save();
 
-  // Neutral starter appearance. Final art and future skins plug into the same Player entity.
   ctx.fillStyle = "#20242c";
   ctx.fillRect(left + 6, top + 22, player.width - 12, 24);
 
@@ -25,7 +63,11 @@ export function renderDefaultSkin(ctx, player) {
   ctx.fillRect(left + 6, top + 55, 8, 3);
   ctx.fillRect(left + player.width - 14, top + 55, 8, 3);
 
-  const eyeX = player.facing > 0 ? left + player.width - 10 : left + 5;
+  const eyeX =
+    player.facing > 0
+      ? left + player.width - 10
+      : left + 5;
+
   ctx.fillStyle = "#1a1d23";
   ctx.fillRect(eyeX, top + 11, 2, 2);
 
