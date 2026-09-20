@@ -1,7 +1,7 @@
-import { Scene } from "../core/Scene.js";
-import { Player } from "../entities/Player.js";
-import { CastleWorld } from "../world/CastleWorld.js";
-import { CastleRenderer } from "../world/CastleRenderer.js";
+import { Scene } from "../core/Scene.js?v=v0.3.2";
+import { Player } from "../entities/Player.js?v=v0.3.2";
+import { CastleWorld } from "../world/CastleWorld.js?v=v0.3.2";
+import { CastleRenderer } from "../world/CastleRenderer.js?v=v0.3.2";
 
 export class CastleScene extends Scene {
   constructor(app) {
@@ -58,8 +58,8 @@ export class CastleScene extends Scene {
   }
 
   drawHud(ctx, renderer) {
-    ctx.fillStyle = "rgba(6,8,12,.82)";
-    ctx.fillRect(22, 18, 250, 56);
+    ctx.fillStyle = "rgba(6,8,12,.88)";
+    ctx.fillRect(22, 18, 300, 78);
 
     ctx.fillStyle = "#dadce2";
     ctx.font = "700 12px Arial, sans-serif";
@@ -67,28 +67,73 @@ export class CastleScene extends Scene {
 
     ctx.fillStyle = "#777c86";
     ctx.font = "10px Arial, sans-serif";
-    ctx.fillText("HALLWAY • 1,200m", 36, 58);
+    ctx.fillText("HALLWAY • 1,200m", 36, 57);
+
+    const meters = Math.max(
+      0,
+      Math.min(this.world.meters, this.player.x / this.world.pixelsPerMeter)
+    );
+
+    ctx.fillText(
+      "DISTANCE • " + meters.toFixed(1) + "m / 1,200m",
+      36,
+      76
+    );
 
     const barX = renderer.width - 226;
     const barY = 26;
     const barW = 190;
+    const locked = this.player.sprintLocked;
 
-    ctx.fillStyle = "#777c86";
+    ctx.fillStyle = locked ? "#ff5252" : "#777c86";
     ctx.font = "10px Arial, sans-serif";
-    ctx.fillText("STAMINA", barX, barY);
+    ctx.fillText(
+      locked ? "STAMINA • EXHAUSTED" : "STAMINA",
+      barX,
+      barY
+    );
 
     ctx.fillStyle = "#22252d";
-    ctx.fillRect(barX, barY + 8, barW, 7);
+    ctx.fillRect(barX, barY + 8, barW, 8);
 
-    ctx.fillStyle = "#d2d4d9";
+    if (locked) {
+      const pulse = 0.5 + Math.sin(performance.now() / 95) * 0.5;
+      ctx.fillStyle = pulse > 0.5 ? "#ff3030" : "#a70f18";
+    } else {
+      ctx.fillStyle = "#d2d4d9";
+    }
+
     ctx.fillRect(
       barX,
       barY + 8,
       barW * (this.player.stamina / this.player.maxStamina),
-      7
+      8
     );
 
-    ctx.fillStyle = "#70757f";
-    ctx.fillText("A/D • SHIFT", barX, barY + 34);
+    ctx.fillStyle = locked ? "#ff6262" : "#70757f";
+    ctx.fillText(
+      locked ? "RECOVER TO 100% • A/D TO WALK" : "A/D • SHIFT",
+      barX,
+      barY + 34
+    );
+
+    if (this.player.exhaustionNoticeTimer > 0) {
+      const maxTime = 2.2;
+      const fadeIn = Math.min(1, (maxTime - this.player.exhaustionNoticeTimer) / 0.16);
+      const fadeOut = Math.min(1, this.player.exhaustionNoticeTimer / 0.55);
+      const alpha = Math.max(0, Math.min(fadeIn, fadeOut));
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.textAlign = "center";
+      ctx.font = "700 17px Arial, sans-serif";
+      ctx.fillStyle = "#f0f0f0";
+      ctx.fillText(
+        "TOO EXHAUSTED — RECOVER YOUR STAMINA TO SPRINT",
+        renderer.width / 2,
+        renderer.height - 42
+      );
+      ctx.restore();
+    }
   }
 }
