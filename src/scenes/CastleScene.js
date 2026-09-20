@@ -78,6 +78,11 @@ export class CastleScene extends Scene {
 
     ctx.save();
     ctx.translate(-Math.round(this.cameraX), 0);
+    this.spiderRenderer.draw(ctx, this.spider);
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(-Math.round(this.cameraX), 0);
     this.player.render(ctx);
     ctx.restore();
 
