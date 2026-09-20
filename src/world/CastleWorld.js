@@ -14,6 +14,10 @@ export class CastleWorld {
     this.minX = 90;
     this.maxX = this.width - 90;
 
+    // The only exit is the grand main door at the end of the 1,200m map.
+    // It must be initialized before closet generation.
+    this.exitX = this.width - 86;
+
     // Five 240m architectural sections share one alignment system.
     const sectionWidth = 240 * this.pixelsPerMeter;
     this.sections = [
@@ -58,9 +62,6 @@ export class CastleWorld {
     }
 
     this.generateClosets();
-
-    // The only exit is the grand main door at the end of the 1,200m map.
-    this.exitX = this.width - 86;
   }
 
   generateClosets() {
@@ -72,28 +73,32 @@ export class CastleWorld {
       return min + Math.floor((seed / 4294967296) * (max - min + 1));
     };
 
-    // Closet positions use odd 30m-grid slots. Columns occupy even slots,
-    // so this guarantees every closet sits in the middle of an open bay.
+    // Columns occupy even 30m slots. Starting from an odd slot keeps closets
+    // in open bays rather than directly on columns.
     const slotStep = 30 * this.pixelsPerMeter;
     const gapChoices = [2, 4]; // 60m or 120m
+    const lastAllowedSlot = Math.floor((this.exitX - 165) / slotStep);
+
     let slotIndex = 3; // first closet at 90m
-    let previousX = null;
 
-    while (true) {
+    // The bound is a second line of defense against future generator changes.
+    const maxPlacements = 40;
+
+    while (slotIndex <= lastAllowedSlot && this.closets.length < maxPlacements) {
       const candidate = slotIndex * slotStep;
-
-      if (candidate > this.exitX - 165) break;
 
       this.closets.push({
         x: candidate,
         y: this.floorY,
         width: 68,
         height: 174,
-        spacing: previousX === null ? "start" :
-          candidate - previousX >= 480 ? "spread" : "tight"
+        spacing: this.closets.length === 0
+          ? "start"
+          : candidate - this.closets[this.closets.length - 1].x >= 480
+            ? "spread"
+            : "tight"
       });
 
-      previousX = candidate;
       slotIndex += gapChoices[randomInt(0, gapChoices.length - 1)];
     }
   }
