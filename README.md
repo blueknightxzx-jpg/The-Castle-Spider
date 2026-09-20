@@ -4,11 +4,11 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.1 — Technical Foundation
+**Current:** v0.2 — Player
 
 The project is being developed from a locked master roadmap.
 
-## Foundation currently contains
+## Current systems
 
 - Fixed internal game resolution with responsive browser scaling
 - Central game loop
@@ -19,17 +19,24 @@ The project is being developed from a locked master roadmap.
 - Camera foundation
 - Boot scene
 - Main menu scene
-- Isolated sandbox scene
+- Modular player entity
+- Movement with acceleration/deceleration
+- Sprint and stamina system
+- World bounds/collision foundation
 - Optional F3 debug overlay
 - Low-spec performance-conscious rendering defaults
 
 ## Controls
 
 Menu:
-- Enter: start foundation sandbox
+- Enter: start player test
 
-Sandbox:
-- WASD / Arrow keys: move marker
+Player test:
+- A / Left Arrow: move left
+- D / Right Arrow: move right
+- W / Up Arrow: move up
+- S / Down Arrow: move down
+- Shift: sprint
 - F3: toggle debug overlay
 
-The sandbox is an engineering test, not the finished game.
+The player artwork is intentionally temporary. The movement architecture will remain underneath future character art and animation.
