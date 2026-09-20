@@ -4,7 +4,7 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.4 — Interaction system started
+**Current:** v0.5 — Spider foundation
 
 The project follows a locked master roadmap.
 
@@ -41,8 +41,11 @@ The project follows a locked master roadmap.
 - Aligned windows, columns, sconces and closets
 - Enlarged interactive closets
 - v0.4 E-key interaction system
+- v0.5 spider entity and perception foundation
 - Closet open/close animation
 - Contextual interaction prompt
+- Spider states: Dormant → Listening
+- Distance/movement-based spider perception foundation
 - Grand golden exit
 - F3 debug telemetry for FPS, state, map meters and player position
 - Low-spec performance-conscious rendering defaults
@@ -75,6 +78,8 @@ Knight and other character designs will be added later as skins without changing
 Room names and exit labels are not rendered into the game world.
 
 Closets are now interactive in v0.4. Their future hiding behavior is reserved for v0.6.
+
+The first spider foundation is active in v0.5. It can remain dormant or enter a listening state based on player movement and distance; hunting/chasing is not active yet.
 
 The final exit is a large golden double door at the end of the 1,200m hallway.
 
