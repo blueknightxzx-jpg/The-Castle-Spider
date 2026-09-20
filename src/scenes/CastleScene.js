@@ -59,16 +59,15 @@ export class CastleScene extends Scene {
 
   drawHud(ctx, renderer) {
     ctx.fillStyle = "rgba(6,8,12,.82)";
-    ctx.fillRect(22, 18, 330, 72);
+    ctx.fillRect(22, 18, 250, 56);
 
     ctx.fillStyle = "#dadce2";
     ctx.font = "700 12px Arial, sans-serif";
     ctx.fillText("THE CASTLE SPIDER", 36, 38);
 
-    ctx.fillStyle = "#757a84";
-    ctx.font = "11px Arial, sans-serif";
-    ctx.fillText("v0.3 • HALLWAY", 36, 58);
-    ctx.fillText("E • INTERACT (SOON)", 36, 75);
+    ctx.fillStyle = "#777c86";
+    ctx.font = "10px Arial, sans-serif";
+    ctx.fillText("HALLWAY • 1,200m", 36, 58);
 
     const barX = renderer.width - 226;
     const barY = 26;
@@ -91,9 +90,5 @@ export class CastleScene extends Scene {
 
     ctx.fillStyle = "#70757f";
     ctx.fillText("A/D • SHIFT", barX, barY + 34);
-
-    ctx.fillStyle = "#626771";
-    ctx.font = "11px Arial, sans-serif";
-    ctx.fillText("Sections: " + this.world.sections.length, barX, barY + 52);
   }
 }
