@@ -5,10 +5,8 @@ export class SpiderRenderer {
     const x = spider.x;
     const y = spider.y;
 
-    if (
-      x < -180 ||
-      x > ctx.canvas.width + 180
-    ) return;
+    // The scene applies the world-to-screen camera transform before drawing,
+    // so this renderer must not cull against raw world-space x.
 
     ctx.save();
 
