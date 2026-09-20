@@ -3,5 +3,6 @@ export const CONFIG = Object.freeze({
   height: 540,
   maxDelta: 1 / 30,
   targetFps: 60,
-  debugKey: "f3"
+  debugKey: "f3",
+  interactionKey: "e"
 });
