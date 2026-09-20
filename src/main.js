@@ -1,12 +1,12 @@
-import { CONFIG } from "./core/Config.js?v=v0.5.0";
-import { Input } from "./core/Input.js?v=v0.5.0";
-import { Renderer } from "./core/Renderer.js?v=v0.5.0";
-import { StateMachine } from "./core/StateMachine.js?v=v0.5.0";
-import { Game } from "./core/Game.js?v=v0.5.0";
-import { Camera } from "./core/Camera.js?v=v0.5.0";
-import { BootScene } from "./scenes/BootScene.js?v=v0.5.0";
-import { MenuScene } from "./scenes/MenuScene.js?v=v0.5.0";
-import { CastleScene } from "./scenes/CastleScene.js?v=v0.5.0";
+import { CONFIG } from "./core/Config.js?v=v0.5.1";
+import { Input } from "./core/Input.js?v=v0.5.1";
+import { Renderer } from "./core/Renderer.js?v=v0.5.1";
+import { StateMachine } from "./core/StateMachine.js?v=v0.5.1";
+import { Game } from "./core/Game.js?v=v0.5.1";
+import { Camera } from "./core/Camera.js?v=v0.5.1";
+import { BootScene } from "./scenes/BootScene.js?v=v0.5.1";
+import { MenuScene } from "./scenes/MenuScene.js?v=v0.5.1";
+import { CastleScene } from "./scenes/CastleScene.js?v=v0.5.1";
 
 function showRuntimeError(error) {
   const message = error instanceof Error ? error.message : String(error);
