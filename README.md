@@ -14,7 +14,7 @@ The project follows a locked master roadmap.
 - 4 px/m rendering scale
 - One continuous side-view hallway
 - Structured five-section castle architecture
-- 10 deterministic closet positions with 90–120m gaps
+- 11 deterministic closet positions with 60–120m gaps
 - Single grand golden main exit
 
 ## Current systems
