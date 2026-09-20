@@ -49,7 +49,6 @@ export class CastleWorld {
         });
       }
 
-      // Sconces use the open lower wall zones.
       for (const metersOffset of [45, 195]) {
         this.sconces.push({
           x: x0 + metersOffset * this.pixelsPerMeter,
@@ -73,18 +72,16 @@ export class CastleWorld {
       return min + Math.floor((seed / 4294967296) * (max - min + 1));
     };
 
-    // Closet slots lie on a 30m grid and never sit on a column.
+    // Closet positions use odd 30m-grid slots. Columns occupy even slots,
+    // so this guarantees every closet sits in the middle of an open bay.
     const slotStep = 30 * this.pixelsPerMeter;
-    const minimumGapSlots = 3; // 90m
-    const maximumGapSlots = 4; // 120m
-
-    let slotIndex = 3; // 90m from the entrance
+    const gapChoices = [2, 4]; // 60m or 120m
+    let slotIndex = 3; // first closet at 90m
     let previousX = null;
 
     while (true) {
       const candidate = slotIndex * slotStep;
 
-      // Keep the final closet comfortably away from the grand exit.
       if (candidate > this.exitX - 165) break;
 
       this.closets.push({
@@ -92,11 +89,12 @@ export class CastleWorld {
         y: this.floorY,
         width: 68,
         height: 174,
-        spot: previousX !== null && candidate - previousX >= 480 ? "good" : "tight"
+        spacing: previousX === null ? "start" :
+          candidate - previousX >= 480 ? "spread" : "tight"
       });
 
       previousX = candidate;
-      slotIndex += randomInt(minimumGapSlots, maximumGapSlots);
+      slotIndex += gapChoices[randomInt(0, gapChoices.length - 1)];
     }
   }
 }
