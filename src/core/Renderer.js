@@ -1,8 +1,10 @@
 export class Renderer {
   constructor(canvas, width, height) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    // Keep the renderer broadly compatible with lightweight/older browsers.
+    this.ctx = canvas.getContext("2d", { alpha: false });
     if (!this.ctx) throw new Error("Canvas 2D rendering is unavailable.");
+
     this.width = width;
     this.height = height;
     this.resize();
@@ -21,5 +23,7 @@ export class Renderer {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
-  getContext() { return this.ctx; }
+  getContext() {
+    return this.ctx;
+  }
 }
