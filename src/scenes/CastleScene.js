@@ -14,7 +14,11 @@ export class CastleScene extends Scene {
   }
 
   enter() {
-    this.player = new Player({ x: 170, y: 405 });
+    this.player = new Player({
+      x: 170,
+      y: this.world.playerY,
+      skin: "default"
+    });
     this.cameraX = 0;
   }
 
@@ -46,7 +50,7 @@ export class CastleScene extends Scene {
     );
 
     ctx.save();
-    ctx.translate(-this.cameraX, 0);
+    ctx.translate(-Math.round(this.cameraX), 0);
     this.player.render(ctx);
     ctx.restore();
 
@@ -54,8 +58,8 @@ export class CastleScene extends Scene {
   }
 
   drawHud(ctx, renderer) {
-    ctx.fillStyle = "rgba(6,8,12,.80)";
-    ctx.fillRect(22, 18, 300, 64);
+    ctx.fillStyle = "rgba(6,8,12,.82)";
+    ctx.fillRect(22, 18, 330, 72);
 
     ctx.fillStyle = "#dadce2";
     ctx.font = "700 12px Arial, sans-serif";
@@ -63,7 +67,8 @@ export class CastleScene extends Scene {
 
     ctx.fillStyle = "#757a84";
     ctx.font = "11px Arial, sans-serif";
-    ctx.fillText("v0.3 • CASTLE", 36, 58);
+    ctx.fillText("v0.3 • HALLWAY", 36, 58);
+    ctx.fillText("E • INTERACT (SOON)", 36, 75);
 
     const barX = renderer.width - 226;
     const barY = 26;
@@ -85,14 +90,10 @@ export class CastleScene extends Scene {
     );
 
     ctx.fillStyle = "#70757f";
-    ctx.fillText("A/D • W/S • SHIFT", barX, barY + 34);
+    ctx.fillText("A/D • SHIFT", barX, barY + 34);
 
     ctx.fillStyle = "#626771";
     ctx.font = "11px Arial, sans-serif";
-    ctx.fillText(
-      "Castle sections: " + this.world.sections.length,
-      36,
-      renderer.height - 22
-    );
+    ctx.fillText("Sections: " + this.world.sections.length, barX, barY + 52);
   }
 }
