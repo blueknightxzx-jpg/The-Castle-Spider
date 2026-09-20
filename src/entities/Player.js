@@ -1,12 +1,13 @@
-import { clamp, resolveAxis } from "../core/Collision.js";
+import { clamp, resolveHorizontal } from "../core/Collision.js";
+import { getSkinRenderer } from "./skins/Registry.js";
 
 export class Player {
-  constructor({ x = 160, y = 360 } = {}) {
+  constructor({ x = 160, y = 430, skin = "default" } = {}) {
     this.x = x;
     this.y = y;
 
     this.width = 28;
-    this.height = 56;
+    this.height = 58;
 
     this.walkSpeed = 155;
     this.sprintMultiplier = 1.75;
@@ -18,25 +19,26 @@ export class Player {
 
     this.maxSpeedSmoothing = 900;
     this.velocityX = 0;
-    this.velocityY = 0;
 
     this.facing = 1;
     this.isSprinting = false;
     this.isMoving = false;
+
+    this.skin = skin;
+    this.skinRenderer = getSkinRenderer(skin);
   }
 
   update(dt, input, world) {
     const left = input.isDown("a") || input.isDown("arrowleft");
     const right = input.isDown("d") || input.isDown("arrowright");
-    const up = input.isDown("w") || input.isDown("arrowup");
-    const down = input.isDown("s") || input.isDown("arrowdown");
 
+    // W/S and Up/Down intentionally do nothing.
     const axisX = Number(right) - Number(left);
-    const axisY = Number(down) - Number(up);
+    this.isMoving = axisX !== 0;
 
-    this.isMoving = axisX !== 0 || axisY !== 0;
-
-    if (axisX !== 0) this.facing = axisX > 0 ? 1 : -1;
+    if (axisX !== 0) {
+      this.facing = axisX > 0 ? 1 : -1;
+    }
 
     const wantsSprint =
       input.isDown("shift") &&
@@ -60,14 +62,15 @@ export class Player {
     }
 
     const speed = this.walkSpeed * (this.isSprinting ? this.sprintMultiplier : 1);
-
     const targetVX = axisX * speed;
-    const targetVY = axisY * speed;
 
-    this.velocityX = approach(this.velocityX, targetVX, this.maxSpeedSmoothing * dt);
-    this.velocityY = approach(this.velocityY, targetVY, this.maxSpeedSmoothing * dt);
+    this.velocityX = approach(
+      this.velocityX,
+      targetVX,
+      this.maxSpeedSmoothing * dt
+    );
 
-    const xResult = resolveAxis(
+    const result = resolveHorizontal(
       this.x,
       this.velocityX,
       world.minX + this.width / 2,
@@ -75,46 +78,20 @@ export class Player {
       dt
     );
 
-    const yResult = resolveAxis(
-      this.y,
-      this.velocityY,
-      world.minY + this.height / 2,
-      world.maxY - this.height / 2,
-      dt
-    );
+    this.x = result.position;
+    this.velocityX = result.velocity;
 
-    this.x = xResult.position;
-    this.y = yResult.position;
-    this.velocityX = xResult.velocity;
-    this.velocityY = yResult.velocity;
+    // The hallway is a single movement plane.
+    this.y = world.playerY;
   }
 
   render(ctx) {
-    const left = this.x - this.width / 2;
-    const top = this.y - this.height;
+    this.skinRenderer(ctx, this);
+  }
 
-    ctx.save();
-
-    // Temporary readable knight silhouette.
-    ctx.fillStyle = "#222631";
-    ctx.fillRect(left + 5, top + 22, this.width - 10, 30);
-
-    ctx.fillStyle = "#d7b18f";
-    ctx.fillRect(left + 8, top + 5, this.width - 16, 21);
-
-    ctx.fillStyle = "#adb5c0";
-    ctx.fillRect(left + 5, top + 2, this.width - 10, 8);
-
-    ctx.fillStyle = "#c6ccd3";
-    ctx.fillRect(left + 5, top + 46, 8, 18);
-    ctx.fillRect(left + this.width - 13, top + 46, 8, 18);
-
-    ctx.fillStyle = "#8d98a6";
-    if (this.isSprinting) {
-      ctx.fillRect(left - 5, top + 25, 7, 18);
-    }
-
-    ctx.restore();
+  setSkin(name) {
+    this.skin = name;
+    this.skinRenderer = getSkinRenderer(name);
   }
 
   getBounds() {
