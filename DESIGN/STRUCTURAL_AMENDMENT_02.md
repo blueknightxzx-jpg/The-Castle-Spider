@@ -8,8 +8,8 @@ Applied after v0.3 visual review and before v0.4.
 2. The world uses a 4 px/m rendering scale.
 3. The previous generic wall doors are removed.
 4. All current door-like hiding structures are dedicated castle closets.
-5. Closet positions use a 30m architectural grid.
-6. Closet gaps are intentionally varied between **90m and 120m**.
+5. Closet positions use a 30m architectural grid with open-bay-only placement.
+6. Closet gaps are intentionally varied between **60m and 120m**.
 7. The layout is seeded, so it is varied but reproducible.
 8. Closets are placed between structural columns and align cleanly with the wall architecture.
 9. Room/section names are not shown to the player.
