@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#07090d">
+  <meta name="description" content="The Castle Spider — browser survival-horror game">
   <title>The Castle Spider</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="app">
     <canvas id="gameCanvas" aria-label="The Castle Spider game canvas"></canvas>
-    <noscript>The Castle Spider requires JavaScript.</noscript>
+    <noscript>
+      <div style="color:#ddd;font:14px Arial,sans-serif;padding:24px">
+        The Castle Spider requires JavaScript.
+      </div>
+    </noscript>
   </main>
-  <script type="module" src="./src/main.js"></script>
+  <!-- Build query prevents an old cached module from restoring a broken runtime. -->
+  <script type="module" src="./src/main.js?v=v0.3.1-hotfix"></script>
 </body>
 </html>
