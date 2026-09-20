@@ -1,10 +1,10 @@
-import { Scene } from "../core/Scene.js?v=v0.5.0";
-import { InteractionSystem } from "../core/Interaction.js?v=v0.5.0";
-import { Player } from "../entities/Player.js?v=v0.5.0";
-import { CastleWorld } from "../world/CastleWorld.js?v=v0.5.0";
-import { CastleRenderer } from "../world/CastleRenderer.js?v=v0.5.0";
-import { Spider } from "../entities/Spider.js?v=v0.5.0";
-import { SpiderRenderer } from "../world/SpiderRenderer.js?v=v0.5.0";
+import { Scene } from "../core/Scene.js?v=v0.5.1";
+import { InteractionSystem } from "../core/Interaction.js?v=v0.5.1";
+import { Player } from "../entities/Player.js?v=v0.5.1";
+import { CastleWorld } from "../world/CastleWorld.js?v=v0.5.1";
+import { CastleRenderer } from "../world/CastleRenderer.js?v=v0.5.1";
+import { Spider } from "../entities/Spider.js?v=v0.5.1";
+import { SpiderRenderer } from "../world/SpiderRenderer.js?v=v0.5.1";
 
 export class CastleScene extends Scene {
   constructor(app) {
