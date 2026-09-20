@@ -34,6 +34,14 @@ export class CastleWorld {
     this.sconces = [];
     this.closets = [];
 
+    // v0.5 begins with one deterministic spider presence.
+    // It is far enough into the castle to avoid turning the opening into
+    // an immediate threat encounter.
+    this.spiderSpawn = {
+      x: 390 * this.pixelsPerMeter,
+      y: 86
+    };
+
     // Structural columns every 60m.
     const bayWidth = 60 * this.pixelsPerMeter;
 
