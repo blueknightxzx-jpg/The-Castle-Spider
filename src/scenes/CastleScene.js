@@ -1,8 +1,10 @@
-import { Scene } from "../core/Scene.js?v=v0.4.0";
-import { InteractionSystem } from "../core/Interaction.js?v=v0.4.0";
-import { Player } from "../entities/Player.js?v=v0.4.0";
-import { CastleWorld } from "../world/CastleWorld.js?v=v0.4.0";
-import { CastleRenderer } from "../world/CastleRenderer.js?v=v0.4.0";
+import { Scene } from "../core/Scene.js?v=v0.5.0";
+import { InteractionSystem } from "../core/Interaction.js?v=v0.5.0";
+import { Player } from "../entities/Player.js?v=v0.5.0";
+import { CastleWorld } from "../world/CastleWorld.js?v=v0.5.0";
+import { CastleRenderer } from "../world/CastleRenderer.js?v=v0.5.0";
+import { Spider } from "../entities/Spider.js?v=v0.5.0";
+import { SpiderRenderer } from "../world/SpiderRenderer.js?v=v0.5.0";
 
 export class CastleScene extends Scene {
   constructor(app) {
@@ -10,8 +12,10 @@ export class CastleScene extends Scene {
     this.app = app;
     this.world = new CastleWorld();
     this.castleRenderer = new CastleRenderer();
+    this.spiderRenderer = new SpiderRenderer();
     this.interaction = new InteractionSystem({ range: 110 });
     this.player = null;
+    this.spider = null;
     this.cameraX = 0;
     this.hudTime = 0;
   }
@@ -25,6 +29,10 @@ export class CastleScene extends Scene {
     this.cameraX = 0;
     this.hudTime = 0;
     this.interaction.active = null;
+    this.spider = new Spider({
+      x: this.world.spiderSpawn.x,
+      y: this.world.spiderSpawn.y
+    });
   }
 
   update(dt) {
@@ -37,6 +45,12 @@ export class CastleScene extends Scene {
       world: this.world,
       dt
     });
+
+    this.spider.update(
+      dt,
+      this.player,
+      this.world
+    );
 
     const viewportWidth = this.app.renderer.width;
     const target = this.player.x - viewportWidth * 0.38;
@@ -68,6 +82,7 @@ export class CastleScene extends Scene {
     ctx.restore();
 
     this.drawInteractionPrompt(ctx);
+    this.drawSpiderStateFx(ctx, renderer);
     this.drawHud(ctx, renderer);
   }
 
@@ -101,6 +116,31 @@ export class CastleScene extends Scene {
     ctx.textAlign = "left";
     ctx.font = "700 10px Arial, sans-serif";
     ctx.fillText(prompt.action, left + 36, top + 19);
+    ctx.restore();
+  }
+
+  drawSpiderStateFx(ctx, renderer) {
+    if (!this.spider || this.spider.state === "dormant") return;
+
+    const x = this.spider.x - this.cameraX;
+    if (x < -140 || x > ctx.canvas.width + 140) return;
+
+    ctx.save();
+    ctx.globalAlpha =
+      this.spider.state === "listening"
+        ? 0.3 + Math.sin(this.hudTime * 4) * 0.08
+        : 0.18;
+    ctx.strokeStyle = "#d7d9de";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(
+      x,
+      this.spider.y + 26,
+      7,
+      0,
+      Math.PI * 2
+    );
+    ctx.stroke();
     ctx.restore();
   }
 
