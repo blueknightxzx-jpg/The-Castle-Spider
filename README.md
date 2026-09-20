@@ -4,9 +4,18 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.3 — Castle, Structural Amendment 01
+**Current:** v0.3 — Castle, Structural Amendments 01–02
 
 The project follows a locked master roadmap.
+
+## Current world
+
+- Full map length: **1,200 meters**
+- 4 px/m rendering scale
+- One continuous side-view hallway
+- Structured five-section castle architecture
+- 10 deterministic closet positions with 90–120m gaps
+- Single grand golden main exit
 
 ## Current systems
 
@@ -23,11 +32,8 @@ The project follows a locked master roadmap.
 - Horizontal world bounds
 - Neutral Default character skin
 - Replaceable skin architecture
-- Data-driven multi-section castle hallway
-- Structured architecture grid
-- Aligned windows, columns, doors, sconces and floor
-- Long world camera traversal
-- North exit marker
+- Aligned windows, columns, sconces and closets
+- Grand golden exit
 - Optional F3 debug overlay
 - Low-spec performance-conscious rendering defaults
 
@@ -54,13 +60,10 @@ The starting character uses the **Default** skin.
 
 Knight and other character designs will be added later as skins without changing the underlying player controller.
 
-## Architecture
+## World rules
 
-- `src/core/` — reusable engine systems
-- `src/entities/` — gameplay entities and skin renderers
-- `src/world/` — castle data and rendering
-- `src/scenes/` — game scenes
-- `src/main.js` — application composition
-- `DESIGN/` — locked milestone and structural documents
+Room names and exit labels are not rendered into the game world.
 
-The castle visuals are intentionally structured around a fixed architectural grid so future content can be added without creating overlapping, unaligned scenery.
+Closets are currently visual-only. Interaction and hiding behavior arrive in their roadmap phases.
+
+The final exit is a large golden double door at the end of the 1,200m hallway.
