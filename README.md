@@ -4,9 +4,9 @@ A browser-based 2D survival-horror game.
 
 ## Development status
 
-**Current:** v0.3 — Castle
+**Current:** v0.3 — Castle, Structural Amendment 01
 
-The project is being developed from a locked master roadmap.
+The project follows a locked master roadmap.
 
 ## Current systems
 
@@ -15,15 +15,17 @@ The project is being developed from a locked master roadmap.
 - Scene/state manager
 - Keyboard input abstraction
 - Canvas renderer
-- Camera foundation and world travel
+- Camera/world traversal
 - Boot and main menu scenes
 - Modular player entity
-- Movement with acceleration/deceleration
+- Horizontal movement with acceleration/deceleration
 - Sprint and stamina
-- World bounds/collision foundation
-- Data-driven multi-section castle world
-- Castle architecture renderer
-- Windows, pillars, floor, torches and section identities
+- Horizontal world bounds
+- Neutral Default character skin
+- Replaceable skin architecture
+- Data-driven multi-section castle hallway
+- Structured architecture grid
+- Aligned windows, columns, doors, sconces and floor
 - Long world camera traversal
 - North exit marker
 - Optional F3 debug overlay
@@ -32,23 +34,33 @@ The project is being developed from a locked master roadmap.
 ## Controls
 
 Menu:
-- Enter: enter the castle
+- Enter: enter the hallway
 
-Castle:
+Hallway:
 - A / Left Arrow: move left
 - D / Right Arrow: move right
-- W / Up Arrow: move up
-- S / Down Arrow: move down
 - Shift: sprint
-- F3: toggle debug overlay
+- E: reserved interaction key (not active until v0.4)
+
+Not used for movement:
+- W
+- S
+- Up Arrow
+- Down Arrow
+
+## Character system
+
+The starting character uses the **Default** skin.
+
+Knight and other character designs will be added later as skins without changing the underlying player controller.
 
 ## Architecture
 
 - `src/core/` — reusable engine systems
-- `src/entities/` — gameplay entities
-- `src/world/` — world data and world rendering
+- `src/entities/` — gameplay entities and skin renderers
+- `src/world/` — castle data and rendering
 - `src/scenes/` — game scenes
 - `src/main.js` — application composition
-- `DESIGN/` — locked milestone documents
+- `DESIGN/` — locked milestone and structural documents
 
-The temporary visual assets are intentionally replaceable. The underlying systems are being built first.
+The castle visuals are intentionally structured around a fixed architectural grid so future content can be added without creating overlapping, unaligned scenery.
