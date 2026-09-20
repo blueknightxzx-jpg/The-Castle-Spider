@@ -93,22 +93,29 @@ export class CastleScene extends Scene {
       barY
     );
 
-    ctx.fillStyle = "#22252d";
-    ctx.fillRect(barX, barY + 8, barW, 8);
-
     if (locked) {
       const pulse = 0.5 + Math.sin(performance.now() / 95) * 0.5;
-      ctx.fillStyle = pulse > 0.5 ? "#ff3030" : "#a70f18";
+
+      ctx.fillStyle = pulse > 0.5 ? "#4f1117" : "#261015";
+      ctx.fillRect(barX, barY + 8, barW, 8);
+
+      ctx.strokeStyle = pulse > 0.5 ? "#ff3d46" : "#a41620";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(barX - 1, barY + 7, barW + 2, 10);
     } else {
-      ctx.fillStyle = "#d2d4d9";
+      ctx.fillStyle = "#22252d";
+      ctx.fillRect(barX, barY + 8, barW, 8);
     }
 
-    ctx.fillRect(
-      barX,
-      barY + 8,
-      barW * (this.player.stamina / this.player.maxStamina),
-      8
-    );
+    if (!locked) {
+      ctx.fillStyle = "#d2d4d9";
+      ctx.fillRect(
+        barX,
+        barY + 8,
+        barW * (this.player.stamina / this.player.maxStamina),
+        8
+      );
+    }
 
     ctx.fillStyle = locked ? "#ff6262" : "#70757f";
     ctx.fillText(
