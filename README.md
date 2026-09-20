@@ -11,11 +11,12 @@ The project follows a locked master roadmap.
 ## Current world
 
 - Full map length: **1,200 meters**
-- 4 px/m rendering scale
+- **12 pixels per meter**
+- **14,400px** total world width
 - One continuous side-view hallway
-- Structured five-section castle architecture
-- 11 deterministic closet positions with 60–120m gaps
-- Single grand golden main exit
+- Five 240m architectural sections
+- Seeded closet positions with 60–120m spacing
+- Single grand golden main exit with a curved upper door edge matching its arch
 
 ## Current systems
 
@@ -32,9 +33,10 @@ The project follows a locked master roadmap.
 - Horizontal world bounds
 - Neutral Default character skin
 - Replaceable skin architecture
+- Meter-derived castle architecture
 - Aligned windows, columns, sconces and closets
 - Grand golden exit
-- Optional F3 debug overlay
+- F3 debug telemetry for FPS, state, map meters and player position
 - Low-spec performance-conscious rendering defaults
 
 ## Controls
