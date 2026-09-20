@@ -88,8 +88,12 @@ export class CastleWorld {
       this.closets.push({
         x: candidate,
         y: this.floorY,
-        width: 3.5 * this.pixelsPerMeter,
-        height: 4.8 * this.pixelsPerMeter,
+        width: 7 * this.pixelsPerMeter,
+        height: 8.5 * this.pixelsPerMeter,
+        interactive: true,
+        isOpen: false,
+        openAmount: 0,
+        interactionPulse: 0,
         spacing: this.closets.length === 0
           ? "start"
           : candidate - this.closets[this.closets.length - 1].x >= 90 * this.pixelsPerMeter
