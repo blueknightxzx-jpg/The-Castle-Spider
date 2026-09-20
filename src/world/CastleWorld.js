@@ -29,7 +29,7 @@ export class CastleWorld {
     this.sconces = [];
     this.closets = [];
 
-    // Repeating 60m structural bays. Major elements occupy dedicated bay types.
+    // 60m structural bays.
     const bayWidth = 60 * this.pixelsPerMeter;
 
     for (const section of this.sections) {
@@ -39,21 +39,20 @@ export class CastleWorld {
         this.columns.push(x0 + offset);
       }
 
-      // Windows occupy alternating bays.
-      for (const offset of [30, 150, 270, 390, 510, 630, 750, 870]) {
-        if (offset >= section.width) continue;
+      // Window centers: 30m, 90m, 150m, 210m into each section.
+      for (const metersOffset of [30, 90, 150, 210]) {
         this.windows.push({
-          x: x0 + offset * this.pixelsPerMeter / 4,
+          x: x0 + metersOffset * this.pixelsPerMeter,
           y: 142,
           width: 76,
           height: 112
         });
       }
 
-      // Wall sconces use fixed anchors in the open lower wall zones.
-      for (const offset of [45, 195]) {
+      // Sconces use the open lower wall zones.
+      for (const metersOffset of [45, 195]) {
         this.sconces.push({
-          x: x0 + offset * this.pixelsPerMeter / 4,
+          x: x0 + metersOffset * this.pixelsPerMeter,
           y: 286
         });
       }
@@ -66,54 +65,38 @@ export class CastleWorld {
   }
 
   generateClosets() {
-    // Seeded randomness means the layout is varied but reproducible.
+    // Seeded layout: varied on purpose, but exactly reproducible.
     let seed = 0xC4573;
-    const random = () => {
+
+    const randomInt = (min, max) => {
       seed = (seed * 1664525 + 1013904223) >>> 0;
-      return seed / 4294967296;
+      return min + Math.floor((seed / 4294967296) * (max - min + 1));
     };
 
-    const minimumGap = 300; // 75m
-    const maximumGap = 520; // 130m
-    const minWallClearance = 52;
+    // Closet slots lie on a 30m grid and never sit on a column.
+    const slotStep = 30 * this.pixelsPerMeter;
+    const minimumGapSlots = 3; // 90m
+    const maximumGapSlots = 4; // 120m
 
-    let x = 250;
+    let slotIndex = 3; // 90m from the entrance
+    let previousX = null;
 
-    while (x < this.exitX - 260 && this.closets.length < 18) {
-      let candidate = x;
-      let accepted = false;
+    while (true) {
+      const candidate = slotIndex * slotStep;
 
-      for (let attempt = 0; attempt < 8; attempt++) {
-        const blockedByColumn = this.columns.some((column) =>
-          Math.abs(column - candidate) < minWallClearance
-        );
+      // Keep the final closet comfortably away from the grand exit.
+      if (candidate > this.exitX - 165) break;
 
-        if (!blockedByColumn) {
-          accepted = true;
-          break;
-        }
+      this.closets.push({
+        x: candidate,
+        y: this.floorY,
+        width: 68,
+        height: 174,
+        spot: previousX !== null && candidate - previousX >= 480 ? "good" : "tight"
+      });
 
-        candidate += 36;
-      }
-
-      if (accepted) {
-        const previous = this.closets[this.closets.length - 1];
-        const gap = previous ? candidate - previous.x : candidate;
-
-        if (gap >= minimumGap) {
-          this.closets.push({
-            x: Math.round(candidate),
-            y: this.floorY,
-            width: 68,
-            height: 174,
-            // Future hiding/interaction can use this without changing placement.
-            spot: gap > 410 ? "good" : "tight"
-          });
-        }
-      }
-
-      const gap = minimumGap + Math.floor(random() * (maximumGap - minimumGap + 1));
-      x = candidate + gap;
+      previousX = candidate;
+      slotIndex += randomInt(minimumGapSlots, maximumGapSlots);
     }
   }
 }
