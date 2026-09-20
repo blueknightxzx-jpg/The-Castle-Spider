@@ -99,3 +99,9 @@ Applied before v0.4:
 - Set closet spacing to 90–120m on a 30m grid.
 - Removed room/exit text labels.
 - Established the grand golden main exit.
+
+## Structural amendment 03
+Applied during v0.3.2 hotfix:
+- Sprint locks immediately at 0 stamina.
+- Sprint cannot resume until stamina reaches 100%.
+- Exhaustion is communicated by a pulsing red stamina track and a fading warning message.
