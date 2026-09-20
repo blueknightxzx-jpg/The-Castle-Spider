@@ -1,21 +1,22 @@
 # Structural Amendment 02
-## FULL-MAP SCALE, CLOSETS, AND GRAND EXIT
+## TRUE MAP SCALE, CLOSETS, AND GRAND EXIT
 
-Applied after v0.3 visual review and before v0.4.
+Applied before v0.4.
 
 ### Decisions
 1. The castle is the full game map at **1,200 meters**.
-2. The world uses a 4 px/m rendering scale.
-3. The previous generic wall doors are removed.
-4. All current door-like hiding structures are dedicated castle closets.
-5. Closet positions use a 30m architectural grid with open-bay-only placement.
-6. Closet gaps are intentionally varied between **60m and 120m**.
-7. The layout is seeded, so it is varied but reproducible.
-8. Closets are placed between structural columns and align cleanly with the wall architecture.
+2. The runtime uses **12 pixels per meter**, making the map 14,400px wide.
+3. All major architectural dimensions are derived from that meter scale.
+4. The previous generic wall doors are removed.
+5. All current door-like hiding structures are dedicated castle closets.
+6. Closet positions use a 30m architectural grid.
+7. Closet gaps are intentionally varied between **60m and 120m**.
+8. The seeded generator guarantees closets stay in open structural bays and has a hard generation cap.
 9. Room/section names are not shown to the player.
 10. The exit is one grand main golden double door at the far end.
-11. The exit has no text label.
-12. Closets remain visual-only until their interaction/hiding systems are implemented.
+11. The golden door's upper boundary uses a matching curve to fit inside the stone arch.
+12. The exit has no text label.
+13. Closets remain visual-only until their interaction/hiding systems are implemented.
 
 ### Re-lock
 This amendment is part of the locked roadmap until explicitly revised again.
