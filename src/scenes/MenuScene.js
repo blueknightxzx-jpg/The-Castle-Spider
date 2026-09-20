@@ -8,7 +8,7 @@ export class MenuScene extends Scene {
 
   update() {
     if (this.app.input.wasPressed("enter")) {
-      this.app.states.change("player");
+      this.app.states.change("castle");
     }
   }
 
@@ -42,7 +42,7 @@ export class MenuScene extends Scene {
 
     ctx.fillStyle = "#70737c";
     ctx.font = "12px Arial, sans-serif";
-    ctx.fillText("v0.2 PLAYER", 62, 370);
+    ctx.fillText("v0.3 CASTLE", 62, 370);
     ctx.fillText("F3  DEBUG OVERLAY", 62, 392);
   }
 }
